@@ -8,6 +8,18 @@ admin_variables=
     web_enabled=true
     web_port=6080
     stats_credentials="stats:P6dg&6sKJc$Z#ysVx"
+    cluster_username="cluster_admin"
+    cluster_password="Ly7Gsdt^SfWnx1Xb3"
+    cluster_check_interval_ms=200
+    cluster_check_status_frequency=100
+    cluster_mysql_query_rules_save_to_disk=true
+    cluster_mysql_servers_save_to_disk=true
+    cluster_mysql_users_save_to_disk=true
+    cluster_proxysql_servers_save_to_disk=true
+    cluster_mysql_query_rules_diffs_before_sync=3
+    cluster_mysql_servers_diffs_before_sync=3
+    cluster_mysql_users_diffs_before_sync=3
+    cluster_proxysql_servers_diffs_before_sync=3
 }
 
 mysql_variables=
@@ -34,18 +46,6 @@ mysql_variables=
     monitor_password="Cs923js&&Sv2kjBtw^s"
     monitor_galera_healthcheck_interval=2000
     monitor_galera_healthcheck_timeout=800
-    cluster_username="cluster_admin"
-    cluster_password="Ly7Gsdt^SfWnx1Xb3"
-    cluster_check_interval_ms=200
-    cluster_check_status_frequency=100
-    cluster_mysql_query_rules_save_to_disk=true
-    cluster_mysql_servers_save_to_disk=true
-    cluster_mysql_users_save_to_disk=true
-    cluster_proxysql_servers_save_to_disk=true
-    cluster_mysql_query_rules_diffs_before_sync=3
-    cluster_mysql_servers_diffs_before_sync=3
-    cluster_mysql_users_diffs_before_sync=3
-    cluster_proxysql_servers_diffs_before_sync=3
 }
 
 
