@@ -6,38 +6,20 @@ set -e
 ##
 ## Supported environment variable:
 ##
-## MONITOR_CONFIG_CHANGE={true|false}
-## - Monitor /etc/proxysql.cnf for any changes and reload ProxySQL automatically
+## INITIALIZE={1|0}
+## - Initialize SQLite database during startup to respect /etc/proxysql.cnf over proxysql.db
 
 # If command has arguments, prepend proxysql
 if [ "${1:0:1}" == '-' ]; then
 	CMDARG="$@"
 fi
 
-if [ $MONITOR_CONFIG_CHANGE ]; then
+if [ ! -z $INITIALIZE ] && [ $INITIALIZE -eq 1 ]; then
 
-	echo 'Env MONITOR_CONFIG_CHANGE=true'
-	CONFIG=/etc/proxysql.cnf
-	oldcksum=$(cksum ${CONFIG})
-
-	# Start ProxySQL in the background
-	proxysql --reload -f $CMDARG &
-
-	echo "Monitoring $CONFIG for changes.."
-	inotifywait -e modify,move,create,delete -m --timefmt '%d/%m/%y %H:%M' --format '%T' ${CONFIG} | \
-	while read date time; do
-		newcksum=$(cksum ${CONFIG})
-		if [ "$newcksum" != "$oldcksum" ]; then
-			echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-			echo "At ${time} on ${date}, ${CONFIG} update detected."
-			echo "++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-			oldcksum=$newcksum
-			echo "Reloading ProxySQL.."
-		        killall -15 proxysql
-			proxysql --initial --reload -f $CMDARG
-		fi
-	done
+	echo 'Env INITIALIZE=1, start ProxySQL with --initial parameter'
+	# Start ProxySQL with PID 1
+	exec proxysql --initial -f $CMDARG
+else
+	# Start ProxySQL with PID 1
+	exec proxysql -f $CMDARG
 fi
-
-# Start ProxySQL with PID 1
-exec proxysql -f $CMDARG
